@@ -1,0 +1,49 @@
+" Most of my vim config is in the neovim config. Options in this file are
+" specific to vim only (usually MacVim, for me).
+
+if empty($XDG_CONFIG_HOME)
+    let $XDG_CONFIG_HOME = $HOME.'/.config'
+endif
+if empty($XDG_DATA_HOME)
+    let $XDG_DATA_HOME = $HOME.'/.local/share'
+endif
+
+" Use the neovim paths.
+" set runtimepath^=$XDG_CONFIG_HOME/nvim
+" set runtimepath+=$XDG_CONFIG_HOME/nvim/after
+set runtimepath=$XDG_CONFIG_HOME/nvim,$XDG_CONFIG_HOME/nvim/after,$VIM,$VIMRUNTIME
+
+" Set vim options to match nvim defaults.
+syntax on
+filetype plugin indent on
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set backupdir=.,$XDG_DATA_HOME/nvim/backup
+set belloff=all
+set complete-=i
+set nocompatible
+set directory=$XDG_DATA_HOME/nvim/swap//
+set encoding=utf-8
+set history=10000
+set hlsearch
+set incsearch
+set laststatus=2
+set nrformats-=octal
+set ruler
+set sessionoptions-=options
+set showcmd
+set smarttab
+set undodir=$XDG_DATA_HOME/nvim/undo
+set wildmenu
+
+" Other useful vim-only defaults
+set ttimeout
+set ttimeoutlen=100
+set viewoptions-=options
+
+" The viminfo file persists data between sessions and is incompatible with
+" nvim's equivalent (shada files). Just disable it; this means MacVim won't
+" remember the last position.
+set viminfofile=NONE
