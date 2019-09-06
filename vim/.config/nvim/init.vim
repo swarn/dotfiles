@@ -31,6 +31,13 @@ Plug 'lervag/vimtex', {'for': 'tex'}        " LaTeX
 call plug#end()
 
 
+" Reset the vmrc augroup. Commands added to this group are reset when
+" reloading this file.
+augroup vimrc
+  au!
+augroup END
+
+
 """"""
 " UI
 """"""
@@ -87,6 +94,9 @@ let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
+" Disable gitgutter's default mappings
+let g:gitgutter_map_keys = 0
+
 
 """""""""""""""""
 " Tabs and spaces
@@ -98,12 +108,19 @@ set lcs=tab:»·      " show tabs with »
 set lcs+=trail:·    " show trailing spaces with ·
 set list            " show the lcs characters
 
+" riv seems to override my defaults
+au vimrc FileType rst
+      \ set tabstop=4 |
+      \ set shiftwidth=4 |
+      \ set softtabstop=4
+
 
 """"""""""""""""
 " Other Behavior
 """"""""""""""""
 set ignorecase              " ignore case when searching
 set smartcase               " ... unless search has capital letters
+set nofoldenable            " disable folding
 
 " Quickfix window always opens full-width, rather than just the bottom of the
 " current window.
