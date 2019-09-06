@@ -68,19 +68,21 @@ set signcolumn=yes
 " command corner, and 2) it removes space's default move-right.
 map <SPACE> <leader>
 
-" fzf commands
+" fzf
 nnoremap <Leader>f :GFiles<CR>
 nnoremap <Leader>F :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
-nnoremap <Leader>t :BTags<CR>
-nnoremap <Leader>T :Tags<CR>
 nnoremap <Leader>/ :Ag<Space>
 
-" Ycm FixIt
+" YouCompleteMe
 nnoremap <leader>i :YcmCompleter FixIt<CR>
+nnoremap <leader>y :YcmForceCompileAndDiagnostics<cr>
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>tf :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>tc :YcmCompleter GoToDeclaration<CR>
 
-" UltiSnips triggering
+" UltiSnips
 let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
