@@ -10,7 +10,7 @@ endif
 """"""""""""""""""""""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'morhetz/gruvbox'                      " color scheme
+Plug 'gruvbox-community/gruvbox'            " color scheme
 Plug 'vim-airline/vim-airline'              " status line
 Plug 'airblade/vim-gitgutter'               " show git status per line
 Plug 'tpope/vim-fugitive'                   " general git tools

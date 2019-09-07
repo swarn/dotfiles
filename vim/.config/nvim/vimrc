@@ -9,9 +9,10 @@ if empty($XDG_DATA_HOME)
 endif
 
 " Use the neovim paths.
-" set runtimepath^=$XDG_CONFIG_HOME/nvim
-" set runtimepath+=$XDG_CONFIG_HOME/nvim/after
-set runtimepath=$XDG_CONFIG_HOME/nvim,$XDG_CONFIG_HOME/nvim/after,$VIM,$VIMRUNTIME
+set runtimepath-=~/.vim
+set runtimepath^=$XDG_CONFIG_HOME/nvim
+set runtimepath-=~/.vim/after
+set runtimepath^=$XDG_CONFIG_HOME/nvim/after
 
 " Set vim options to match nvim defaults.
 syntax on
