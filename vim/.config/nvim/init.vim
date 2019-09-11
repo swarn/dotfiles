@@ -76,18 +76,24 @@ set signcolumn=yes
 map <SPACE> <leader>
 
 " fzf
-nnoremap <Leader>f :GFiles<CR>
+" Custom command; use RipGrep to list files. This will respect .gitignore if
+" present, while ignoring binary files.
+command! -bang RgFiles call fzf#run(fzf#wrap(
+    \ {'source': 'rg -l ""', 'sink': 'e'}, <bang>0))
+
+nnoremap <Leader>f :RgFiles<CR>
 nnoremap <Leader>F :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
-nnoremap <Leader>/ :Ag<Space>
+nnoremap <Leader>/ :Rg<Space>
 
 " YouCompleteMe
 nnoremap <leader>i :YcmCompleter FixIt<CR>
-nnoremap <leader>y :YcmForceCompileAndDiagnostics<cr>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <leader>tf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>tc :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>tt :YcmCompleter GetType<CR>
+nnoremap <leader>td :YcmShowDetailedDiagnostic<CR>
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger = '<C-j>'
