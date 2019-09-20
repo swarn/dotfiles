@@ -148,6 +148,10 @@ let g:cpp_no_function_highlight=1
 " Tell Black to store its files in a better place
 let g:black_virtualenv = "~/.local/share/nvim_black"
 
+" Tell riv to stop being so aggressive about folding.
+let g:riv_disable_folding = 1
+let g:riv_fold_auto_update = 0
+
 
 """""""""""""""""""""""""""""
 " Options exclusive to neovim
