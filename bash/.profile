@@ -31,6 +31,3 @@ export PS1='\$ '
 # pwd in terminal window title
 export PROMPT_COMMAND='echo -en "\033]0; "$(dirs +0)" \a"'
 
-# iterm2 integration
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-

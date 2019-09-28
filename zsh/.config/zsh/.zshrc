@@ -1,30 +1,12 @@
-# Ensure directories show up in PATH only once.
-typeset -U path
-typeset -U manpath
+# Explictly set vi-mode. This is redundant; having "*vi*" as EDITOR implicitly
+# sets this.
+bindkey -v
 
-# Add MacPorts paths.
-MACPORTS=/opt/local
-path=($MACPORTS/bin $MACPORTS/sbin $path)
-manpath=($MACPORTS/share/man $manpath)
+# Make vi mode transitions faster.
+export KEYTIMEOUT=1
 
-# Add Python user bin directories to path. This is for anything installed with
-# e.g. "pip install --user". Note: When Python is upgraded,  e.g. from 3.7 to
-# 3.8, packages may need to be re-installed or Python versions managed.
-python3 -m site &> /dev/null && path=($path `python3 -m site --user-base`/bin)
-python2 -m site &> /dev/null && path=($path `python2 -m site --user-base`/bin)
-
-# Use neovim as the default editor for many apps.
-export EDITOR="nvim"
-
-# Replace command-line vim with nvim.
-alias vim="nvim"
-alias vimdiff="nvim -d"
-
-# Add MacVim launcher script to the path.
-path=($path /Applications/MacVim.app/Contents/bin)
-
-# Make vim/MacVim use the neovim config file.
-export VIMINIT='let $MYVIMRC="~/.config/nvim/init.vim" | source $MYVIMRC'
+# Make backspace work like vim in insert mode.
+bindkey "^?" backward-delete-char
 
 # History command configuration
 HISTFILE=$XDG_DATA_HOME/zsh/history
@@ -40,40 +22,46 @@ export CLICOLOR=1
 # Define a few color aliases.
 autoload -U colors && colors
 
-# zsh runs the precmd function before printing each prompt.
-function precmd() {
-    # Set the iterm2 window title with the current directory.
-    echo -en "\033];$(print -P %~)\007"
-}
+# Define colors for zsh to use in tab completion.
+LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46"
+LS_COLORS="$LS_COLORS:tw=30;42:ow=30;43"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# Explictly set vi-mode. This is redundant; having "vi*" as EDITOR implicitly
-# sets this.
-bindkey -v
+# Chevron with a little color for a prompt.
+PROMPT="%{$fg[green]%}❯%{$reset_color%} "
 
-# Whenever starting a new command, or when the mode changes, change the prompt.
+# Set the session title to the CWD, with ~ truncation.
+function showCwdInTitle() { echo -en "\033];$(print -P %~)\007" }
+chpwd_functions+=(showCwdInTitle)
+showCwdInTitle
+
+# Print a blank line before each new command.
+function echoBlank() { echo }
+precmd_functions+=(echoBlank)
+
+# Whenever starting a new command, or when the vi mode changes, update the
+# cursor symbol based on the mode.
 function zle-line-init zle-keymap-select {
-    if [[ ${KEYMAP} = vicmd ]]; then
-        PROMPT="%{$fg[red]%}>%{$reset_color%} "
-    else
-        PROMPT="%# "
-    fi
-    zle reset-prompt
+    case ${KEYMAP} in
+        vicmd) print -n '\033[1 q';;    # block cursor
+        *)     print -n '\033[5 q';;    # beam cursor
+    esac
 }
 zle -N zle-line-init
 zle -N zle-keymap-select
-
-# Make vi mode transitions faster.
-export KEYTIMEOUT=1
-
-# Make backspace work like vim in insert mode.
-bindkey "^?" backward-delete-char
 
 # Enable smarter tab completions.
 autoload -U compinit && compinit
 
 # Quiet!
-setopt no_list_beep
+setopt no_beep
 
 # Directory-changing sugar
 setopt auto_cd                  # "dir" -> "cd dir"
 setopt auto_pushd               # "cd dir" -> "pushd dir"
+
+# Enable fzf completions. Must come after vi-mode to properly rewrite some
+# key combinations.
+if [ -f /opt/local/share/zsh/site-functions/fzf ]; then
+    source /opt/local/share/zsh/site-functions/fzf
+fi

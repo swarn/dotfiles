@@ -4,6 +4,8 @@ if ! has ('nvim')
     source $HOME/.config/nvim/vimrc
 endif
 
+let g:python_host_prog = '/opt/local/bin/python2'
+let g:python3_host_prog = '/opt/local/bin/python3'
 
 """"""""""""""""""""""""""""""""
 " Plugins: managed with vim-plug
@@ -24,7 +26,7 @@ Plug 'SirVer/ultisnips'                     " snippets
 Plug 'honza/vim-snippets'                   " snippet definitions
 
 Plug 'octol/vim-cpp-enhanced-highlight'     " C++
-Plug 'Rykka/riv.vim'                        " ReST
+Plug 'Rykka/riv.vim', {'for': 'rst'}        " ReST
 Plug 'psf/black', {'for': 'python'}         " Python code formatter
 Plug 'lervag/vimtex', {'for': 'tex'}        " LaTeX
 
@@ -120,6 +122,9 @@ au vimrc FileType rst
       \ set shiftwidth=4 |
       \ set softtabstop=4
 
+" Vimtex's indenting doesn't seem great to me, and it's laggy
+let g:vimtex_indent_enabled = 0
+
 
 """"""""""""""""
 " Other Behavior
@@ -137,7 +142,8 @@ autocmd filetype qf setlocal nonumber colorcolumn=
 
 " Disable preview window for completions
 set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
+" let g:ycm_add_preview_to_completeopt = 0
+" let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Assume all .tex files are latex.
 let g:tex_flavor = "latex"
