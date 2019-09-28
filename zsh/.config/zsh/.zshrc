@@ -43,8 +43,8 @@ precmd_functions+=(echoBlank)
 # cursor symbol based on the mode.
 function zle-line-init zle-keymap-select {
     case ${KEYMAP} in
-        vicmd) print -n '\033[1 q';;    # block cursor
-        *)     print -n '\033[5 q';;    # beam cursor
+        vicmd) print -n '\033[2 q';;    # block cursor
+        *)     print -n '\033[6 q';;    # beam cursor
     esac
 }
 zle -N zle-line-init
