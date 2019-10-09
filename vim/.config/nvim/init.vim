@@ -158,6 +158,13 @@ let g:black_virtualenv = "~/.local/share/nvim_black"
 let g:riv_disable_folding = 1
 let g:riv_fold_auto_update = 0
 
+" Latex replacements for vim-surround. Where * is the cursor:
+"   Old text              Command       New text
+"   Hello w*orld          ysiwcemph     Hello \emph{world}
+"   Hello w*orld          ysiwecenter   Hello \begin{center}world\end{center}
+let g:surround_{char2nr('c')} = "\\\1command: \1{\r}"
+let g:surround_{char2nr('e')} = "\\begin{\1environment: \1}\r\\end{\1\1}"
+
 
 """""""""""""""""""""""""""""
 " Options exclusive to neovim
