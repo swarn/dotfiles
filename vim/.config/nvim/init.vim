@@ -24,6 +24,7 @@ Plug '/opt/local/share/fzf/vim'             " fuzzy search
 Plug 'junegunn/fzf.vim'                     " enhancements to fzf vim
 Plug 'SirVer/ultisnips'                     " snippets
 Plug 'honza/vim-snippets'                   " snippet definitions
+Plug 'psliwka/vim-smoothie'
 
 Plug 'octol/vim-cpp-enhanced-highlight'     " C++
 Plug 'Rykka/riv.vim', {'for': 'rst'}        " ReST
@@ -176,9 +177,23 @@ if has ('nvim')
     " Make vimtex talk to Neovim using neovim-remote.
     let g:vimtex_compiler_progname = 'nvr'
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event
-    " handler.
+    " Function to create the custom floating window
+    function! FloatingFZF()
+        let opts = {  'relative': 'editor',
+                    \ 'anchor': 'SW',
+                    \ 'row': &lines - 2,
+                    \ 'col': 0,
+                    \ 'width': &columns,
+                    \ 'height': 20,
+                    \ 'style': 'minimal'
+                    \ }
+        let buf = nvim_create_buf(v:false, v:true)
+        call nvim_open_win(buf, v:true, opts)
+    endfunction
+
+    " Using the custom window creation function
+    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
     autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal g`\"" |
