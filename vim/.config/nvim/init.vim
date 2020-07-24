@@ -24,12 +24,13 @@ Plug '/opt/local/share/fzf/vim'             " fuzzy search
 Plug 'junegunn/fzf.vim'                     " enhancements to fzf vim
 Plug 'SirVer/ultisnips'                     " snippets
 Plug 'honza/vim-snippets'                   " snippet definitions
-Plug 'psliwka/vim-smoothie'
+Plug 'psliwka/vim-smoothie'                 " smooth(ish) scrolling
+Plug 'easymotion/vim-easymotion'            " magical cursor teleports
 
-Plug 'octol/vim-cpp-enhanced-highlight'     " C++
-Plug 'Rykka/riv.vim', {'for': 'rst'}        " ReST
-Plug 'psf/black', {'for': 'python'}         " Python code formatter
-Plug 'lervag/vimtex', {'for': 'tex'}        " LaTeX
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'Rykka/riv.vim', {'for': 'rst'}
+Plug 'psf/black', {'for': 'python', 'branch':'stable'}
+Plug 'lervag/vimtex', {'for': 'tex'}
 
 call plug#end()
 
@@ -91,8 +92,8 @@ nnoremap <Leader>h :History<CR>
 nnoremap <Leader>/ :Rg<Space>
 
 " YouCompleteMe
-nnoremap <leader>i :YcmCompleter FixIt<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>ti :YcmCompleter FixIt<CR>
 nnoremap <leader>tf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>tc :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>tt :YcmCompleter GetType<CR>
@@ -105,6 +106,11 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " Disable gitgutter's default mappings
 let g:gitgutter_map_keys = 0
+
+" EasyMotion
+let g:EasyMotion_do_mapping = 0         " Disable default mappings
+let g:EasyMotion_smartcase = 1          " replicate smartcase behavior
+nmap s <Plug>(easymotion-overwin-f)
 
 
 """""""""""""""""
