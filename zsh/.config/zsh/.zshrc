@@ -65,3 +65,5 @@ setopt auto_pushd               # "cd dir" -> "pushd dir"
 if [ -f /opt/local/share/zsh/site-functions/fzf ]; then
     source /opt/local/share/zsh/site-functions/fzf
 fi
+
+alias nvim="/Users/seth/.local/bin/nvim"

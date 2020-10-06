@@ -1,143 +1,254 @@
-" Both vim and neovim use this file; vimrc tells vim to use the neovim paths
-" and sets many values to neovim defaults.
-if ! has ('nvim')
-    source $HOME/.config/nvim/vimrc
-endif
-
+" Point neovim to my macports-managed Python installs
 let g:python_host_prog = '/opt/local/bin/python2'
 let g:python3_host_prog = '/opt/local/bin/python3'
 
 """"""""""""""""""""""""""""""""
 " Plugins: managed with vim-plug
 """"""""""""""""""""""""""""""""
-call plug#begin('~/.config/nvim/plugged')
+silent! if plug#begin('~/.config/nvim/plugged')
 
-Plug 'gruvbox-community/gruvbox'            " color scheme
-Plug 'vim-airline/vim-airline'              " status line
-Plug 'airblade/vim-gitgutter'               " show git status per line
-Plug 'tpope/vim-fugitive'                   " general git tools
-Plug 'tpope/vim-surround'                   " surround motions
-Plug 'tpope/vim-commentary'                 " auto commenting
-Plug 'tpope/vim-vinegar'                    " file browsing
-Plug 'tpope/vim-dispatch'                   " run jobs
-Plug '/opt/local/share/fzf/vim'             " fuzzy search
-Plug 'junegunn/fzf.vim'                     " enhancements to fzf vim
-Plug 'honza/vim-snippets'                   " snippet definitions
-Plug 'psliwka/vim-smoothie'                 " smooth(ish) scrolling
-Plug 'easymotion/vim-easymotion'            " magical cursor teleports
+Plug 'gruvbox-community/gruvbox'
+    let g:gruvbox_bold = 0
+    let g:gruvbox_italic = 1
+    let g:gruvbox_contrast_dark = "hard"
+    let g:gruvbox_contrast_light = "hard"
+    let g:gruvbox_invert_selection = 0
+    let g:gruvbox_sign_column = "bg0"
+
+Plug 'vim-airline/vim-airline'
+    let g:airline_theme='gruvbox'
+    let g:airline_section_z = '%l/%L:%2v'
+    let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+
+Plug 'airblade/vim-gitgutter'
+    let g:gitgutter_grep = 'rg'
+
+Plug 'tpope/vim-fugitive'
+
+Plug 'tpope/vim-surround'
+    " Latex definitions. Where * is the cursor:
+    "   Old text        Command       New text
+    "   Hello w*orld    ysiwcemph     Hello \emph{world}
+    "   Hello w*orld    ysiwecenter   Hello \begin{center}world\end{center}
+    let g:surround_{char2nr('c')} = "\\\1command: \1{\r}"
+    let g:surround_{char2nr('e')} = "\\begin{\1environment: \1}\r\\end{\1\1}"
+
+Plug 'tpope/vim-commentary'
+
+Plug 'tpope/vim-dispatch'
+    let g:dispatch_no_maps = 1
+
+Plug 'psliwka/vim-smoothie'
+
+Plug 'easymotion/vim-easymotion'
+    let g:EasyMotion_do_mapping = 0
+    let g:EasyMotion_smartcase = 1
+
+Plug 'justinmk/vim-dirvish'
+    let dirvish_mode = ':sort ,^.*/,'
+
+Plug 'farmergreg/vim-lastplace'
 
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'Rykka/riv.vim', {'for': 'rst'}
-Plug 'psf/black', {'for': 'python', 'branch':'stable'}
-Plug 'lervag/vimtex', {'for': 'tex'}
+    let g:cpp_no_function_highlight = 1
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Rykka/riv.vim', {'for': 'rst'}
+    let g:riv_disable_folding = 1
+    let g:riv_fold_auto_update = 0
+
+Plug 'psf/black', {'for': 'python', 'branch':'stable'}
+
+Plug 'lervag/vimtex', {'for': 'tex'}
+    let g:tex_flavor = "latex"
+    let g:vimtex_compiler_progname = 'nvr'
+    let g:vimtex_indent_enabled = 0
+
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+    let $FZF_DEFAULT_OPTS="--bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
+
+    function! s:RipgrepFind()
+        " Searching for a blank pattern rejects binary files, where simply
+        " using `--files` does not.
+        let opts = fzf#wrap({'source': 'rg -l --hidden --follow -g "!.git" ""'})
+        if &columns > 120
+            let opts = fzf#vim#with_preview(opts)
+        elseif &lines > 50
+            let opts.window = {'width': 0.9, 'height': 0.9}
+            let opts = fzf#vim#with_preview(opts, 'up:60%')
+        endif
+        call fzf#run(opts)
+    endfunction
+    command! MyFzfFiles call <SID>RipgrepFind()
+
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'nvim-lua/diagnostic-nvim'
+    call sign_define("LspDiagnosticsErrorSign",
+        \ {"text" : ">>", "texthl": "LspDiagnosticsErrorSign"})
+    call sign_define("LspDiagnosticsWarningSign",
+        \ {"text" : ">>", "texthl": "LspDiagnosticsWarningSign"})
+
+Plug 'nvim-lua/completion-nvim'
+    let g:completion_matching_strategy_list = ['exact', 'fuzzy']
+    let g:completion_enable_auto_signature = 0
+    " let g:completion_confirm_key = "\<C-j>"
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/telescope.nvim'
+
+Plug 'Shougo/echodoc.vim'
+    let g:echodoc_enable_at_startup = 1
 
 call plug#end()
+endif
 
 
-" Reset the vmrc augroup. Commands added to this group are reset when
-" reloading this file.
-augroup vimrc
+augroup MyGroup
   au!
 augroup END
 
 
-""""""
-" UI
-""""""
-set number                  " line numbering
-set hidden                  " allow changed buffers in the background
-set fillchars=vert:\        " vertical window split has no symbol
-set termguicolors           " enable truecolor
-set colorcolumn=88
+" nvim-lspconfig
+lua require('lsp_servers')
 
-" gruvbox color scheme
-let g:gruvbox_bold=0
-let g:gruvbox_italic=1
-let g:gruvbox_contrast_dark="hard"
-let g:gruvbox_contrast_light="hard"
-let g:gruvbox_invert_selection=0
-colorscheme gruvbox
+" completion-nvim
+function s:AttachCompletionIfLoaded()
+    if exists('g:loaded_completion')
+        lua require'completion'.on_attach()
+    endif
+endfunction
+autocmd MyGroup BufEnter * call <SID>AttachCompletionIfLoaded()
 
-" airline status bar
-let g:airline_theme='gruvbox'
+" telescope.nvim
+lua require('configure_telescope')
 
-" Minimal position section on right of status bar
-let g:airline_section_z = '%l/%L:%2v'
 
-" Don't show encoding if it's utf-8.
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+""""""""""""""""""
+" Temp
+""""""""""""""""""
+command! QuickFix call <SID>QuickFix()
+command! LocationList call <SID>LocationList()
 
-" git gutter
-set signcolumn=yes
+function! s:QuickFix() abort
+  call s:FuzzyPick(getqflist(), 'cc')
+endfunction
+
+function! s:LocationList() abort
+  call s:FuzzyPick(getloclist(0), 'll')
+endfunction
+
+function! s:FuzzyPick(items, jump) abort
+  let items = map(a:items, {idx, item ->
+      \ bufname(item.bufnr).':'.string(item.lnum).': '.item.text.' '.string(idx)})
+  let l:options = fzf#wrap(
+      \ fzf#vim#with_preview({
+      \   'source': items,
+      \   'sink': function('<SID>Pick', [a:jump]),
+      \   'options': ['--with-nth', '..-2'],
+      \ })
+      \)
+  call fzf#run(l:options)
+endfunction
+
+function! s:Pick(jump, item) abort
+  let idx = split(a:item, ' ')[-1]
+  execute a:jump idx + 1
+endfunction
 
 
 """"""""""""""""""
 " command mappings
 """"""""""""""""""
+
 " Make space the leader. Map space to backslash so that 1) It shows up in the
 " command corner, and 2) it removes space's default move-right.
 map <SPACE> <leader>
 
-" fzf
-" Custom command; use RipGrep to list files. This will respect .gitignore if
-" present, while ignoring binary files.
-command! -bang RgFiles call fzf#run(fzf#wrap(
-    \ {'source': 'rg -l ""', 'sink': 'e'}, <bang>0))
+nmap                      s   <Plug>(easymotion-overwin-f)
 
-nnoremap <Leader>f :RgFiles<CR>
-nnoremap <Leader>F :Files<CR>
-nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>h :History<CR>
-nnoremap <Leader>/ :Rg<Space>
+nnoremap <silent> <Leader>f   <cmd>MyFzfFiles<CR>
+nnoremap <silent> <Leader>F   <cmd>Files<CR>
+nnoremap <silent> <Leader>b   <cmd>Buffers<CR>
+nnoremap <silent> <Leader>h   <cmd>History<CR>
+nnoremap <silent> <Leader>/   :Rg<Space>
 
-" CoC
+nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
+nnoremap <silent> <leader>sh  <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <leader>sr  <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <leader>ss  <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> <leader>sw  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
-" Install CoC extensions if not present.
-let g:coc_global_extensions = [
-  \ 'coc-clangd',
-  \ 'coc-json',
-  \ 'coc-snippets',
-  \ 'coc-python',
-  \ ]
+nnoremap <silent> <leader>cc  <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <leader>cn  <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader>cf  <cmd>lua vim.lsp.buf.formatting()<CR>
 
-" Navigate expansions with tab.
+nnoremap <silent> <leader>gd  <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>gh  <cmd>lua vim.lsp.buf.declaration()<CR>
+
+nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> <leader>gs  <cmd>lua my_goto_symbol{}<CR>
+
+nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
+nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
+
+nnoremap <silent>         ]d  <cmd>NextDiagnosticCycle<CR>
+nnoremap <silent>         [d  <cmd>PrevDiagnosticCycle<CR>
+
+" Toggle a color column at 89.
+nnoremap <Leader>c :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
+
+" Navigate popup menus, notably completions, with tab.
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Jump to...
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
-nmap <silent> <leader>qf  <Plug>(coc-fix-current)
 
-" Set the K shortcut for contextual help.
-set keywordprg=:call\ CocActionAsync('doHover')
-augroup VimHelp
-  autocmd!
-  autocmd Filetype vim,help setlocal keywordprg=:help
-augroup END
+""""""
+" UI
+""""""
+colorscheme gruvbox
+highlight! link GitGutterAdd LineNr
+highlight! link GitGutterChange LineNr
+highlight! link GitGutterDelete LineNr
 
-" coc-snippets
+set number                  " line numbering
+set hidden                  " allow changed buffers in the background
+set fillchars=vert:│        " vertical window split uses thin line
+set termguicolors           " enable truecolor
+set signcolumn=yes          " always show the sign column
+set ignorecase              " ignore case when searching
+set smartcase               " ... unless search has capital letters
+set nofoldenable            " disable folding
+set noshowmode              " I can tell what mode I'm in.
 
-" Use <C-j> for both expand a snippet from the autocomplete menu. Use <C-j>
-" again to navigate to the next field of the snippet, <C-k> to go back.
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
 
-" Disable gitgutter's default mappings
-let g:gitgutter_map_keys = 0
+" Avoid showing message extra message when using completion
+set shortmess+=c
 
-" EasyMotion
-let g:EasyMotion_do_mapping = 0         " Disable default mappings
-let g:EasyMotion_smartcase = 1          " replicate smartcase behavior
-nmap s <Plug>(easymotion-overwin-f)
+" Show ex command changes (e.g. :s) in realtime.
+set inccommand=nosplit
 
-" vim-dispatch
-let g:dispatch_no_maps = 1
-nnoremap <leader>dd :Dispatch<CR>
-nnoremap <leader>db :Dispatch!<CR>
+" Quickfix window always opens full-width, rather than just the bottom of the
+" current window.
+autocmd MyGroup filetype qf wincmd J
+
+" Disable some UI elements in the quickfix window.
+autocmd MyGroup filetype qf setlocal nonumber colorcolumn=
+
+" Respond more quickly.
+set updatetime=300
+
+" Split opening order
+set splitbelow
+set splitright
+
+" Allow mouse
+set mouse=a
+
 
 """""""""""""""""
 " Tabs and spaces
@@ -150,89 +261,8 @@ set lcs+=trail:·    " show trailing spaces with ·
 set list            " show the lcs characters
 
 " riv seems to override my defaults
-au vimrc FileType rst
+au MyGroup FileType rst
       \ set tabstop=4 |
       \ set shiftwidth=4 |
       \ set softtabstop=4
 
-" Vimtex's indenting doesn't seem great to me, and it's laggy
-let g:vimtex_indent_enabled = 0
-
-
-""""""""""""""""
-" Other Behavior
-""""""""""""""""
-set ignorecase              " ignore case when searching
-set smartcase               " ... unless search has capital letters
-set nofoldenable            " disable folding
-
-" Quickfix window always opens full-width, rather than just the bottom of the
-" current window.
-autocmd filetype qf wincmd J
-
-" Disable some UI elements in the quickfix window.
-autocmd filetype qf setlocal nonumber colorcolumn=
-
-" Respond more quickly.
-set updatetime=300
-
-" Assume all .tex files are latex.
-let g:tex_flavor = "latex"
-
-" A little less highlighting in C++
-let g:cpp_no_function_highlight=1
-
-" Tell Black to store its files in a better place
-let g:black_virtualenv = "~/.local/share/nvim_black"
-
-" Tell riv to stop being so aggressive about folding.
-let g:riv_disable_folding = 1
-let g:riv_fold_auto_update = 0
-
-" Latex replacements for vim-surround. Where * is the cursor:
-"   Old text              Command       New text
-"   Hello w*orld          ysiwcemph     Hello \emph{world}
-"   Hello w*orld          ysiwecenter   Hello \begin{center}world\end{center}
-let g:surround_{char2nr('c')} = "\\\1command: \1{\r}"
-let g:surround_{char2nr('e')} = "\\begin{\1environment: \1}\r\\end{\1\1}"
-
-
-"""""""""""""""""""""""""""""
-" Options exclusive to neovim
-"""""""""""""""""""""""""""""
-if has ('nvim')
-    " Show ex command changes (e.g. :s) in realtime.
-    set inccommand=nosplit
-
-    " Make vimtex talk to Neovim using neovim-remote.
-    let g:vimtex_compiler_progname = 'nvr'
-
-    " Function to create the custom floating window
-    function! FloatingFZF()
-        let opts = {  'relative': 'editor',
-                    \ 'anchor': 'SW',
-                    \ 'row': &lines - 2,
-                    \ 'col': 0,
-                    \ 'width': &columns,
-                    \ 'height': 20,
-                    \ 'style': 'minimal'
-                    \ }
-        let buf = nvim_create_buf(v:false, v:true)
-        call nvim_open_win(buf, v:true, opts)
-    endfunction
-
-    " Using the custom window creation function
-    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-    autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal g`\"" |
-      \ endif
-endif
-
-
-" Tell GUI-based vims to use my gvimrc, because I don't have it in the
-" usual place.
-if has ('gui_running')
-    source $HOME/.config/nvim/gvimrc
-endif

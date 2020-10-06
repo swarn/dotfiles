@@ -1,5 +1,0 @@
-{
-    "diagnostic.enableHighlightLineNumber": false,
-    "diagnostic.warningSign": ">>",
-    "clangd.path": "clangd-mp-10"
-}
