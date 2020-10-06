@@ -19,10 +19,9 @@ Plug 'tpope/vim-fugitive'                   " general git tools
 Plug 'tpope/vim-surround'                   " surround motions
 Plug 'tpope/vim-commentary'                 " auto commenting
 Plug 'tpope/vim-vinegar'                    " file browsing
-Plug 'Valloric/YouCompleteMe'               " auto completion
+Plug 'tpope/vim-dispatch'                   " run jobs
 Plug '/opt/local/share/fzf/vim'             " fuzzy search
 Plug 'junegunn/fzf.vim'                     " enhancements to fzf vim
-Plug 'SirVer/ultisnips'                     " snippets
 Plug 'honza/vim-snippets'                   " snippet definitions
 Plug 'psliwka/vim-smoothie'                 " smooth(ish) scrolling
 Plug 'easymotion/vim-easymotion'            " magical cursor teleports
@@ -31,6 +30,8 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Rykka/riv.vim', {'for': 'rst'}
 Plug 'psf/black', {'for': 'python', 'branch':'stable'}
 Plug 'lervag/vimtex', {'for': 'tex'}
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -91,18 +92,39 @@ nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
 nnoremap <Leader>/ :Rg<Space>
 
-" YouCompleteMe
-nnoremap <leader>g :YcmCompleter GoTo<CR>
-nnoremap <leader>ti :YcmCompleter FixIt<CR>
-nnoremap <leader>tf :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>tc :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>tt :YcmCompleter GetType<CR>
-nnoremap <leader>td :YcmShowDetailedDiagnostic<CR>
+" CoC
 
-" UltiSnips
-let g:UltiSnipsExpandTrigger = '<C-j>'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+" Install CoC extensions if not present.
+let g:coc_global_extensions = [
+  \ 'coc-clangd',
+  \ 'coc-json',
+  \ 'coc-snippets',
+  \ 'coc-python',
+  \ ]
+
+" Navigate expansions with tab.
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Jump to...
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+nmap <silent> <leader>qf  <Plug>(coc-fix-current)
+
+" Set the K shortcut for contextual help.
+set keywordprg=:call\ CocActionAsync('doHover')
+augroup VimHelp
+  autocmd!
+  autocmd Filetype vim,help setlocal keywordprg=:help
+augroup END
+
+" coc-snippets
+
+" Use <C-j> for both expand a snippet from the autocomplete menu. Use <C-j>
+" again to navigate to the next field of the snippet, <C-k> to go back.
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Disable gitgutter's default mappings
 let g:gitgutter_map_keys = 0
@@ -112,6 +134,10 @@ let g:EasyMotion_do_mapping = 0         " Disable default mappings
 let g:EasyMotion_smartcase = 1          " replicate smartcase behavior
 nmap s <Plug>(easymotion-overwin-f)
 
+" vim-dispatch
+let g:dispatch_no_maps = 1
+nnoremap <leader>dd :Dispatch<CR>
+nnoremap <leader>db :Dispatch!<CR>
 
 """""""""""""""""
 " Tabs and spaces
@@ -147,10 +173,8 @@ autocmd filetype qf wincmd J
 " Disable some UI elements in the quickfix window.
 autocmd filetype qf setlocal nonumber colorcolumn=
 
-" Disable preview window for completions
-set completeopt-=preview
-" let g:ycm_add_preview_to_completeopt = 0
-" let g:ycm_autoclose_preview_window_after_insertion = 1
+" Respond more quickly.
+set updatetime=300
 
 " Assume all .tex files are latex.
 let g:tex_flavor = "latex"
