@@ -164,6 +164,8 @@ nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
 
 nnoremap <silent>         ]d  <cmd>NextDiagnosticCycle<CR>
 nnoremap <silent>         [d  <cmd>PrevDiagnosticCycle<CR>
+nmap                      ]h  <Plug>(GitGutterNextHunk)
+nmap                      [h  <Plug>(GitGutterPrevHunk)
 
 " Toggle a color column at 89.
 nnoremap <Leader>c :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
@@ -180,6 +182,7 @@ colorscheme gruvbox
 highlight! link GitGutterAdd LineNr
 highlight! link GitGutterChange LineNr
 highlight! link GitGutterDelete LineNr
+highlight! link GitGutterChangeDelete LineNr
 
 set number                  " line numbering
 set hidden                  " allow changed buffers in the background
