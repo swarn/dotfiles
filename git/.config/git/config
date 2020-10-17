@@ -1,0 +1,7 @@
+[user]
+	name = Seth Warn
+	email = seth.warn@gmail.com
+[diff]
+	tool = opendiff
+[core]
+	excludesfile = /Users/seth/.config/git/ignore
