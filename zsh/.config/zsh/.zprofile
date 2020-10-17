@@ -12,6 +12,10 @@ MACPORTS=/opt/local
 path=($MACPORTS/bin $MACPORTS/sbin $path)
 manpath=($MACPORTS/share/man $manpath)
 
+USER_LOCAL=~/.local
+path=($USER_LOCAL/bin $path)
+manpath=($USER_LOCAL/share/man $manpath)
+
 # Add Python user bin directories to path. This is for anything installed with
 # e.g. "pip install --user".
 python3 -m site &> /dev/null && path=($path `python3 -m site --user-base`/bin)
