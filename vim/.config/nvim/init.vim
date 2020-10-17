@@ -97,6 +97,7 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/telescope.nvim'
+    highlight! link TelescopeBorder VertSplit
 
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
@@ -126,39 +127,6 @@ lua require('configure_telescope')
 
 
 """"""""""""""""""
-" Temp
-""""""""""""""""""
-command! QuickFix call <SID>QuickFix()
-command! LocationList call <SID>LocationList()
-
-function! s:QuickFix() abort
-  call s:FuzzyPick(getqflist(), 'cc')
-endfunction
-
-function! s:LocationList() abort
-  call s:FuzzyPick(getloclist(0), 'll')
-endfunction
-
-function! s:FuzzyPick(items, jump) abort
-  let items = map(a:items, {idx, item ->
-      \ bufname(item.bufnr).':'.string(item.lnum).': '.item.text.' '.string(idx)})
-  let l:options = fzf#wrap(
-      \ fzf#vim#with_preview({
-      \   'source': items,
-      \   'sink': function('<SID>Pick', [a:jump]),
-      \   'options': ['--with-nth', '..-2'],
-      \ })
-      \)
-  call fzf#run(l:options)
-endfunction
-
-function! s:Pick(jump, item) abort
-  let idx = split(a:item, ' ')[-1]
-  execute a:jump idx + 1
-endfunction
-
-
-""""""""""""""""""
 " command mappings
 """"""""""""""""""
 
@@ -176,8 +144,8 @@ nnoremap <silent> <Leader>/   :Rg<Space>
 
 nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
 nnoremap <silent> <leader>sh  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <leader>sr  <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> <leader>ss  <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> <leader>sr  <cmd>TelescopeLspReferences<CR>
+nnoremap <silent> <leader>ss  <cmd>TelescopeLspDocumentSymbols<CR>
 nnoremap <silent> <leader>sw  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 nnoremap <silent> <leader>cc  <cmd>lua vim.lsp.buf.code_action()<CR>
@@ -189,7 +157,7 @@ nnoremap <silent> <leader>gh  <cmd>lua vim.lsp.buf.declaration()<CR>
 
 nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> <leader>gs  <cmd>lua my_goto_symbol{}<CR>
+nnoremap <silent> <leader>gs  <cmd>TelescopeLspDocumentSymbols<CR>
 
 nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
 nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>

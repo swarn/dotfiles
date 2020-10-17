@@ -13,13 +13,3 @@ telescope.setup {
     }
   }
 }
-
-
-my_goto_symbol = builtin.lsp_document_symbols
-
-
-function my_goto_file()
-  builtin.find_files{
-    find_command = { "rg", "-i", "--hidden", "--files", "-g", "!.git" }
-  }
-end
