@@ -228,9 +228,8 @@ set lcs=tab:»·      " show tabs with »
 set lcs+=trail:·    " show trailing spaces with ·
 set list            " show the lcs characters
 
-" riv seems to override my defaults
-au MyGroup FileType rst
-      \ set tabstop=4 |
-      \ set shiftwidth=4 |
-      \ set softtabstop=4
+" riv seems to override my defaults, so set them again
+au MyGroup FileType rst setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
+" lua custom seems to be two spaces
+au MyGroup Filetype lua setlocal tabstop=2 shiftwidth=2 softtabstop=2
