@@ -1,4 +1,4 @@
-colorscheme gruvbox
+runtime colors/gruvbox.vim
 
 " Fade GitGutter into the background
 highlight! link GitGutterAdd LineNr
@@ -34,7 +34,7 @@ hi! link cPreCondit Normal
 hi! link cPreConditMatch Normal
 hi! link cPreProc Normal
 hi! link cRepeat Normal
-hi! link cSpecial GruvboxAquaBold
+hi! link cSpecial GruvboxYellow
 hi! link cStatement Normal
 hi! link cStorageClass Normal
 hi! link cString GruvboxAqua
@@ -50,28 +50,28 @@ hi! link cppModifier Normal
 hi! link cppNumber Normal
 hi! link cppOperator Normal
 hi! link cppRawString GruvboxAqua
-hi! link cppRawStringDelimiter GruvboxAquaBold
+hi! link cppRawStringDelimiter GruvboxAqua
 hi! link cppStatement Normal
 hi! link cppStorageClass Normal
 hi! link cppStructure Normal
 hi! link cppType Normal
 
 " Coloring for clangd semantic groups
-hi! link ClangdUnknown GruvboxRed
+hi! link ClangdUnknown Normal
 
 " Global variables
-hi! link ClangdVariable GruvboxPurple
+hi! link ClangdVariable GruvboxRed
 hi! link ClangdFunction Normal
 
 hi! link ClangdStaticMemberFunction GruvboxOrange
 hi! link ClangdStaticField GruvboxOrange
 
 hi! link ClangdClass GruvboxAqua
-hi! link ClangdMemberFunction GruvboxYellow
-hi! link ClangdField GruvboxYellow
+hi! link ClangdMemberFunction GruvboxGreen
+hi! link ClangdField GruvboxGreen
 
-hi! link ClangdParameter GruvboxBlue
-hi! link ClangdLocalVariable GruvboxGreen
+hi! link ClangdParameter GruvboxPurple
+hi! link ClangdLocalVariable GruvboxBlue
 
 hi! link ClangdPreprocessor Normal
 hi! link ClangdNamespace Normal
