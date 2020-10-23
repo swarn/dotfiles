@@ -7,3 +7,5 @@ export VIMINIT='if !has("nvim") | let $MYVIMRC="~/.config/nvim/vimrc" | else | l
 # Tell various programs to use the XDG directories.
 export LESSHISTFILE=$XDG_DATA_HOME/less/lesshistfile
 export CONAN_USER_HOME=$XDG_DATA_HOME/conan
+export DOCKER_CONFIG=$$XDG_CONFIG_HOME/docker
+export JUPYTER_CONFIG_DIR=$$XDG_CONFIG_HOME/jupyter
