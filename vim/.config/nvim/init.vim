@@ -135,11 +135,11 @@ map <SPACE> <leader>
 
 nmap                      s   <Plug>(easymotion-overwin-f)
 
-nnoremap <silent> <Leader>f   <cmd>MyFzfFiles<CR>
-nnoremap <silent> <Leader>F   <cmd>Files<CR>
+nnoremap <silent> <Leader>f   <cmd>lua MyTscopeFiles()<CR>
+nnoremap <silent> <Leader>F   <cmd>lua MyTscopeAllFiles()<CR>
 nnoremap <silent> <Leader>b   <cmd>Buffers<CR>
 nnoremap <silent> <Leader>h   <cmd>History<CR>
-nnoremap <silent> <Leader>/   :Rg<Space>
+nnoremap          <Leader>/   :Rg<Space>
 
 nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
 nnoremap <silent> <leader>sh  <cmd>lua vim.lsp.buf.hover()<CR>
@@ -157,6 +157,8 @@ nnoremap <silent> <leader>gh  <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>gs  <cmd>TelescopeLspDocumentSymbols<CR>
+
+nnoremap <silent> <leader>gc  <cmd>lua MyTscopeConfigFiles()<CR>
 
 nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
 nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
