@@ -36,15 +36,31 @@ nvim_lsp.clangd.setup{
 }
 
 nvim_lsp.pyls.setup{
-    on_attach = custom_attach,
-    settings = {
-        pyls = {
-            plugins = {
-                pycodestyle = { enabled = false; };
-                yapf = { enabled = false; };
+  on_attach = custom_attach,
+  settings = {
+    pyls = {
+      plugins = {
+        pycodestyle = { enabled = false; };
+        yapf = { enabled = false; };
 
-                pyflakes = { enabled = true; };
-            };
-        };
+        pyflakes = { enabled = true; };
+      };
     };
+  };
+}
+
+nvim_lsp.sumneko_lua.setup{
+  cmd = {
+    "/Users/seth/src/edit/lua-language-server/bin/macOS/lua-language-server",
+    "-E",
+    "/Users/seth/src/edit/lua-language-server/main.lua"
+  },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = {"hs", "vim", "describe", "it", "before_each", "after_each"}
+      },
+    },
+  },
+  on_attach = custom_attach,
 }
