@@ -98,6 +98,9 @@ Plug 'nvim-lua/telescope.nvim'
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
 
+" Plug 'robert-oleynik/clangd-nvim'
+Plug '~/src/edit/clangd-nvim'
+
 call plug#end()
 endif
 

@@ -17,9 +17,22 @@ local custom_attach = function()
   print("LSP Attached.")
 end
 
+local clangd_nvim = require'clangd_nvim'
 nvim_lsp.clangd.setup{
-    cmd = {"clangd-mp-10", "--background-index"},
-    on_attach = custom_attach,
+  capabilities = {
+    textDocument = {
+      completion = {
+        completionItem = {
+          snippetSupport = true
+        }
+      },
+      semanticHighlightingCapabilities = {
+        semanticHighlighting = true
+      }
+    }
+  },
+  on_attach = custom_attach,
+  on_init = clangd_nvim.on_init,
 }
 
 nvim_lsp.pyls.setup{
