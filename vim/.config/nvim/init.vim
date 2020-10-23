@@ -8,7 +8,7 @@ let g:python3_host_prog = '/opt/local/bin/python3'
 silent! if plug#begin('~/.config/nvim/plugged')
 
 Plug 'gruvbox-community/gruvbox'
-    let g:gruvbox_bold = 0
+    let g:gruvbox_bold = 1
     let g:gruvbox_italic = 1
     let g:gruvbox_contrast_dark = "hard"
     let g:gruvbox_contrast_light = "hard"
@@ -16,7 +16,7 @@ Plug 'gruvbox-community/gruvbox'
     let g:gruvbox_sign_column = "bg0"
 
 Plug 'vim-airline/vim-airline'
-    let g:airline_theme='gruvbox'
+    let g:airline_theme = 'gruvbox'
     let g:airline_section_z = '%l/%L:%2v'
     let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 
@@ -48,9 +48,6 @@ Plug 'justinmk/vim-dirvish'
     let dirvish_mode = ':sort ,^.*/,'
 
 Plug 'farmergreg/vim-lastplace'
-
-Plug 'octol/vim-cpp-enhanced-highlight'
-    let g:cpp_no_function_highlight = 1
 
 Plug 'Rykka/riv.vim', {'for': 'rst'}
     let g:riv_disable_folding = 1
@@ -97,7 +94,6 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/telescope.nvim'
-    highlight! link TelescopeBorder VertSplit
 
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
@@ -178,11 +174,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 """"""
 " UI
 """"""
-colorscheme gruvbox
-highlight! link GitGutterAdd LineNr
-highlight! link GitGutterChange LineNr
-highlight! link GitGutterDelete LineNr
-highlight! link GitGutterChangeDelete LineNr
+colorscheme gruvbox-tweaked
 
 set number                  " line numbering
 set hidden                  " allow changed buffers in the background
