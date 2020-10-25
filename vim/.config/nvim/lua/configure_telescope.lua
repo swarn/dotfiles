@@ -16,8 +16,8 @@ telescope.setup {
         ["<c-j>"] = actions.move_selection_next,
       }
     },
-    generic_sorter = require('telescope.sorters').get_fzy_sorter,
-    file_sorter = require('telescope.sorters').get_fzy_sorter,
+    generic_sorter = sorters.get_fzy_sorter,
+    file_sorter = sorters.get_fzy_sorter,
   }
 }
 
@@ -58,4 +58,40 @@ function MyTscopeConfigFiles()
     {"rg", "--files", "--follow", "-g", "!plugged"},
     vim.api.nvim_call_function('fnamemodify', {vim.env.MYVIMRC, ':h'})
   )
+end
+
+function MyTscopeDotFiles()
+  MyTscopeFinder(
+    {"rg", "--files", "--follow", "--hidden", "-g", "!plugged"},
+    vim.env.XDG_CONFIG_HOME
+  )
+end
+
+function MyTscopeNotesGrep()
+  local conf = require('telescope.config').values
+  local note_path = vim.env.NOTES
+  local opts = get_my_theme()
+  opts.shorten_path = true
+  opts.disable_coordinates = true
+
+  local rg = {'rg', '--max-count', '1', '--color=never', '--no-heading',
+    '--with-filename', '--line-number', '--column', '--smart-case'}
+
+  local live_grepper = finders.new_job(
+    function(prompt)
+      if not prompt then
+        return nil
+      end
+
+      return vim.tbl_flatten { rg, prompt, note_path }
+    end,
+    make_entry.gen_from_vimgrep(opts),
+    opts.max_results
+  )
+
+  pickers.new(opts, {
+    finder = live_grepper,
+    previewer = previewers.vimgrep.new(opts),
+    sorter = conf.generic_sorter(opts),
+  }):find()
 end

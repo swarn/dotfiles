@@ -138,7 +138,6 @@ nmap                      s   <Plug>(easymotion-overwin-f)
 nnoremap <silent> <Leader>f   <cmd>lua MyTscopeFiles()<CR>
 nnoremap <silent> <Leader>F   <cmd>lua MyTscopeAllFiles()<CR>
 nnoremap <silent> <Leader>b   <cmd>Buffers<CR>
-nnoremap <silent> <Leader>h   <cmd>History<CR>
 nnoremap          <Leader>/   :Rg<Space>
 
 nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
@@ -158,7 +157,10 @@ nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>gs  <cmd>TelescopeLspDocumentSymbols<CR>
 
-nnoremap <silent> <leader>gc  <cmd>lua MyTscopeConfigFiles()<CR>
+nnoremap <silent> <leader>ei  <cmd>lua MyTscopeConfigFiles()<CR>
+nnoremap <silent> <leader>ed  <cmd>lua MyTscopeDotFiles()<CR>
+nnoremap <silent> <leader>en  <cmd>lua MyTscopeNotesGrep()<CR>
+nnoremap <silent> <Leader>eh  <cmd>History<CR>
 
 nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
 nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
