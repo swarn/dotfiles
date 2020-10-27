@@ -67,6 +67,11 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
     let $FZF_DEFAULT_OPTS="--bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
 
+Plug 'SirVer/ultisnips'
+    let g:UltiSnipsExpandTrigger="<c-j>"
+    let g:UltiSnipsJumpForwardTrigger="<c-j>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
 Plug 'neovim/nvim-lspconfig'
 
 Plug 'nvim-lua/diagnostic-nvim'
@@ -78,7 +83,7 @@ Plug 'nvim-lua/diagnostic-nvim'
 Plug 'nvim-lua/completion-nvim'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy']
     let g:completion_enable_auto_signature = 0
-    " let g:completion_confirm_key = "\<C-j>"
+    let g:completion_enable_snippet = 'UltiSnips'
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'

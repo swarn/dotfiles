@@ -23,7 +23,7 @@ nvim_lsp.clangd.setup{
     textDocument = {
       completion = {
         completionItem = {
-          snippetSupport = true
+          snippetSupport = false
         }
       },
       semanticHighlightingCapabilities = {

@@ -1,0 +1,14 @@
+snippet once "ifndef header guard"
+#ifndef ${1:`!p
+if not snip.c:
+	import string
+	name = re.sub(r'[^A-Za-z0-9]+', '_', snip.fn).upper()
+	snip.rv = name
+else:
+	snip.rv = snip.c`}
+#define $1
+
+${VISUAL}$0
+
+#endif // $1
+endsnippet
