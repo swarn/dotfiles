@@ -67,20 +67,6 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
     let $FZF_DEFAULT_OPTS="--bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
 
-    function! s:RipgrepFind()
-        " Searching for a blank pattern rejects binary files, where simply
-        " using `--files` does not.
-        let opts = fzf#wrap({'source': 'rg -l --hidden --follow -g "!.git" ""'})
-        if &columns > 120
-            let opts = fzf#vim#with_preview(opts)
-        elseif &lines > 50
-            let opts.window = {'width': 0.9, 'height': 0.9}
-            let opts = fzf#vim#with_preview(opts, 'up:60%')
-        endif
-        call fzf#run(opts)
-    endfunction
-    command! MyFzfFiles call <SID>RipgrepFind()
-
 Plug 'neovim/nvim-lspconfig'
 
 Plug 'nvim-lua/diagnostic-nvim'
