@@ -4,6 +4,10 @@ export EDITOR="nvim"
 # Different initialization for different vims.
 export VIMINIT='if !has("nvim") | let $MYVIMRC="~/.config/nvim/vimrc" | else | let $MYVIMRC="~/.config/nvim/init.vim" | endif | source $MYVIMRC'
 
+# If not set, neovim creates this on startup. But setting it means you can
+# always use the remote funcionality, e.g. with nvr.
+export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
+
 # Where I keep text notes
 export NOTES=~/Documents/notes
 
