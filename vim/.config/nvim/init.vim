@@ -91,7 +91,8 @@ Plug 'nvim-lua/telescope.nvim'
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
 
-Plug 'robert-oleynik/clangd-nvim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+    let g:cursorhold_updatetime = 100
 
 call plug#end()
 endif
@@ -200,9 +201,6 @@ autocmd MyGroup filetype qf wincmd J
 
 " Disable some UI elements in the quickfix window.
 autocmd MyGroup filetype qf setlocal nonumber colorcolumn=
-
-" Respond more quickly.
-set updatetime=300
 
 " Split opening order
 set splitbelow
