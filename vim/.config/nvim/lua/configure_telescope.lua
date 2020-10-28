@@ -56,7 +56,7 @@ end
 function MyTscopeConfigFiles()
   MyTscopeFinder(
     {"rg", "--files", "--follow", "-g", "!plugged"},
-    vim.api.nvim_call_function('fnamemodify', {vim.env.MYVIMRC, ':h'})
+    vim.api.nvim_call_function('stdpath', {'config'})
   )
 end
 

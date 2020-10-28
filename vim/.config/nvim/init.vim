@@ -1,5 +1,4 @@
 " Point neovim to my macports-managed Python installs
-let g:python_host_prog = '/opt/local/bin/python2'
 let g:python3_host_prog = '/opt/local/bin/python3'
 
 """"""""""""""""""""""""""""""""
@@ -63,7 +62,7 @@ Plug 'lervag/vimtex', {'for': 'tex'}
     let g:vimtex_quickfix_open_on_warning = 0
     let g:vimtex_quickfix_autoclose_after_keystrokes = 3
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
     let $FZF_DEFAULT_OPTS="--bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
 
@@ -92,8 +91,7 @@ Plug 'nvim-lua/telescope.nvim'
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
 
-" Plug 'robert-oleynik/clangd-nvim'
-Plug '~/src/edit/clangd-nvim'
+Plug 'robert-oleynik/clangd-nvim'
 
 call plug#end()
 endif
