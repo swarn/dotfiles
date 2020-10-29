@@ -72,6 +72,7 @@ Plug 'SirVer/ultisnips'
     let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 Plug 'neovim/nvim-lspconfig'
+Plug 'robert-oleynik/clangd-nvim'
 
 Plug 'nvim-lua/diagnostic-nvim'
     call sign_define("LspDiagnosticsErrorSign",
@@ -82,6 +83,8 @@ Plug 'nvim-lua/diagnostic-nvim'
 Plug 'nvim-lua/completion-nvim'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy']
     let g:completion_enable_auto_signature = 0
+    let g:completion_enable_auto_popup = 0
+    let g:completion_docked_hover = 1
     let g:completion_enable_snippet = 'UltiSnips'
 
 Plug 'nvim-lua/popup.nvim'
@@ -163,12 +166,11 @@ nnoremap <silent>         [d  <cmd>PrevDiagnosticCycle<CR>
 nmap                      ]h  <Plug>(GitGutterNextHunk)
 nmap                      [h  <Plug>(GitGutterPrevHunk)
 
+imap                   <tab>  <Plug>(completion_smart_tab)
+imap                 <s-tab>  <Plug>(completion_smart_s_tab)
+
 " Toggle a color column at 89.
 nnoremap <Leader>c :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
-
-" Navigate popup menus, notably completions, with tab.
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 
 """"""
