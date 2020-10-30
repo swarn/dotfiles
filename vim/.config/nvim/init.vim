@@ -81,9 +81,13 @@ Plug 'robert-oleynik/clangd-nvim'
 
 Plug 'nvim-lua/diagnostic-nvim'
     call sign_define("LspDiagnosticsErrorSign",
-        \ {"text" : ">>", "texthl": "LspDiagnosticsErrorSign"})
+        \ {"text" : "●", "texthl": "LspDiagnosticsErrorSign"})
     call sign_define("LspDiagnosticsWarningSign",
-        \ {"text" : ">>", "texthl": "LspDiagnosticsWarningSign"})
+        \ {"text" : "●", "texthl": "LspDiagnosticsWarningSign"})
+    call sign_define("LspDiagnosticsInformationSign",
+        \ {"text" : "●", "texthl": "LspDiagnosticsInformationSign"})
+    call sign_define("LspDiagnosticsHintSign",
+        \ {"text" : "●", "texthl": "LspDiagnosticsHintSign"})
 
 Plug 'nvim-lua/completion-nvim'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy']
