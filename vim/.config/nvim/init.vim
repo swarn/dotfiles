@@ -37,6 +37,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
     let g:dispatch_no_maps = 1
 
+Plug 'wellle/targets.vim'
+
 Plug 'psliwka/vim-smoothie'
 
 Plug 'easymotion/vim-easymotion'
