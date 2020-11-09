@@ -2,7 +2,11 @@ let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
-let g:python3_host_prog = $PIPX_HOME . '/venvs/neovim-remote/bin/python'
+let g:python3_host_prog = '/opt/local/bin/python3.9'
+
+augroup MyGroup
+  au!
+augroup END
 
 """"""""""""""""""""""""""""""""
 " Plugins: managed with vim-plug
@@ -70,6 +74,10 @@ Plug 'lervag/vimtex', {'for': 'tex'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
     let $FZF_DEFAULT_OPTS="--bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
+    let g:fzf_command_prefix = 'Fzf'
+
+Plug 'antoinemadec/FixCursorHold.nvim'
+    let g:cursorhold_updatetime = 100
 
 Plug 'SirVer/ultisnips'
     let g:UltiSnipsExpandTrigger="<c-j>"
@@ -103,16 +111,8 @@ Plug 'nvim-lua/telescope.nvim'
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
 
-Plug 'antoinemadec/FixCursorHold.nvim'
-    let g:cursorhold_updatetime = 100
-
 call plug#end()
 endif
-
-
-augroup MyGroup
-  au!
-augroup END
 
 
 " nvim-lspconfig
@@ -142,30 +142,29 @@ nmap                      s   <Plug>(easymotion-overwin-f)
 
 nnoremap <silent> <Leader>f   <cmd>lua MyTscopeFiles()<CR>
 nnoremap <silent> <Leader>F   <cmd>lua MyTscopeAllFiles()<CR>
-nnoremap <silent> <Leader>b   <cmd>Buffers<CR>
-nnoremap          <Leader>/   :Rg<Space>
+nnoremap <silent> <Leader>b   <cmd>FzfBuffers<CR>
+nnoremap          <Leader>/   :FzfRg<Space>
 
 nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
 nnoremap <silent> <leader>sh  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <leader>sr  <cmd>TelescopeLspReferences<CR>
-nnoremap <silent> <leader>ss  <cmd>TelescopeLspDocumentSymbols<CR>
-nnoremap <silent> <leader>sw  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 nnoremap <silent> <leader>cc  <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <leader>cr  <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> <leader>cn  <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <leader>cf  <cmd>lua vim.lsp.buf.formatting()<CR>
 
 nnoremap <silent> <leader>gd  <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <leader>gh  <cmd>lua vim.lsp.buf.declaration()<CR>
-
 nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> <leader>gs  <cmd>TelescopeLspDocumentSymbols<CR>
+nnoremap <silent> <leader>go  <cmd>Telescope lsp_document_symbols<CR>
+nnoremap <silent> <leader>ge  <cmd>OpenDiagnostic<CR>
+nnoremap <silent> <leader>gr  <cmd>Telescope lsp_references<CR>
 
 nnoremap <silent> <leader>ei  <cmd>lua MyTscopeConfigFiles()<CR>
 nnoremap <silent> <leader>ed  <cmd>lua MyTscopeDotFiles()<CR>
 nnoremap <silent> <leader>en  <cmd>lua MyTscopeNotesGrep()<CR>
-nnoremap <silent> <Leader>eh  <cmd>History<CR>
+nnoremap <silent> <Leader>eh  <cmd>FzfHistory<CR>
 
 nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
 nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
