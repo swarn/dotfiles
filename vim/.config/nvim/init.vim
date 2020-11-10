@@ -61,8 +61,6 @@ Plug 'Rykka/riv.vim', {'for': 'rst'}
     let g:riv_disable_folding = 1
     let g:riv_fold_auto_update = 0
 
-Plug 'psf/black', {'for': 'python', 'branch':'stable'}
-
 Plug 'lervag/vimtex', {'for': 'tex'}
     let g:tex_flavor = "latex"
     let g:vimtex_indent_enabled = 0
