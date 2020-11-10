@@ -69,6 +69,14 @@ Plug 'lervag/vimtex', {'for': 'tex'}
     let g:vimtex_quickfix_open_on_warning = 0
     let g:vimtex_quickfix_autoclose_after_keystrokes = 3
 
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+    let g:vim_markdown_auto_insert_bullets = 0
+    let g:vim_markdown_new_list_item_indent = 0
+
+Plug 'iamcco/markdown-preview.nvim', {
+    \ 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
     let $FZF_DEFAULT_OPTS="--bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
