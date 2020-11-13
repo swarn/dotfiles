@@ -93,20 +93,9 @@ Plug 'SirVer/ultisnips'
 Plug 'neovim/nvim-lspconfig'
 Plug 'robert-oleynik/clangd-nvim'
 
-" Plug 'nvim-lua/diagnostic-nvim'
-    call sign_define("LspDiagnosticsErrorSign",
-        \ {"text" : "●", "texthl": "LspDiagnosticsErrorSign"})
-    call sign_define("LspDiagnosticsWarningSign",
-        \ {"text" : "●", "texthl": "LspDiagnosticsWarningSign"})
-    call sign_define("LspDiagnosticsInformationSign",
-        \ {"text" : "●", "texthl": "LspDiagnosticsInformationSign"})
-    call sign_define("LspDiagnosticsHintSign",
-        \ {"text" : "●", "texthl": "LspDiagnosticsHintSign"})
-
 Plug 'nvim-lua/completion-nvim'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy']
     let g:completion_enable_auto_signature = 0
-    let g:completion_enable_auto_popup = 0
     let g:completion_docked_hover = 1
     let g:completion_enable_snippet = 'UltiSnips'
 
@@ -151,7 +140,7 @@ nnoremap <silent> <Leader>F   <cmd>lua MyTscopeAllFiles()<CR>
 nnoremap <silent> <Leader>b   <cmd>FzfBuffers<CR>
 nnoremap          <Leader>/   :FzfRg<Space>
 
-nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
+nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 nnoremap <silent> <leader>sh  <cmd>lua vim.lsp.buf.hover()<CR>
 
 nnoremap <silent> <leader>cc  <cmd>lua vim.lsp.buf.code_action()<CR>
@@ -164,7 +153,7 @@ nnoremap <silent> <leader>gh  <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>go  <cmd>Telescope lsp_document_symbols<CR>
-nnoremap <silent> <leader>ge  <cmd>OpenDiagnostic<CR>
+nnoremap <silent> <leader>ge  <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 nnoremap <silent> <leader>gr  <cmd>Telescope lsp_references<CR>
 
 nnoremap <silent> <leader>ei  <cmd>lua MyTscopeConfigFiles()<CR>
@@ -172,25 +161,36 @@ nnoremap <silent> <leader>ed  <cmd>lua MyTscopeDotFiles()<CR>
 nnoremap <silent> <leader>en  <cmd>lua MyTscopeNotesGrep()<CR>
 nnoremap <silent> <Leader>eh  <cmd>FzfHistory<CR>
 
+nnoremap <silent> <leader>tc  <cmd>CompletionToggle<CR>
+nnoremap <silent> <leader>tw  :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
+
 nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
 nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
 
-nnoremap <silent>         ]d  <cmd>NextDiagnosticCycle<CR>
-nnoremap <silent>         [d  <cmd>PrevDiagnosticCycle<CR>
+nnoremap <silent>         ]d  <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent>         [d  <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nmap                      ]h  <Plug>(GitGutterNextHunk)
 nmap                      [h  <Plug>(GitGutterPrevHunk)
 
 imap                   <tab>  <Plug>(completion_smart_tab)
 imap                 <s-tab>  <Plug>(completion_smart_s_tab)
 
-" Toggle a color column at 89.
-nnoremap <Leader>c :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
-
 
 """"""
 " UI
 """"""
 colorscheme gruvbox-tweaked
+
+sign define LspDiagnosticsSignError text=●
+sign define LspDiagnosticsSignWarning text=●
+sign define LspDiagnosticsSignInformation text=●
+sign define LspDiagnosticsSignHint text=●
+
+" Temp highlighting until gruvbox updates for new lsp highlight groups
+hi! link LspDiagnosticsSignError GruvboxRedSign
+hi! link LspDiagnosticsSignWarning GruvboxYellowSign
+hi! link LspDiagnosticsSignHint GruvboxAquaSign
+hi! link LspDiagnosticsSignInformation GruvboxBlueSign
 
 set number                  " line numbering
 set hidden                  " allow changed buffers in the background
