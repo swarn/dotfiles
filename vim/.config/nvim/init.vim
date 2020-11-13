@@ -93,7 +93,7 @@ Plug 'SirVer/ultisnips'
 Plug 'neovim/nvim-lspconfig'
 Plug 'robert-oleynik/clangd-nvim'
 
-Plug 'nvim-lua/diagnostic-nvim'
+" Plug 'nvim-lua/diagnostic-nvim'
     call sign_define("LspDiagnosticsErrorSign",
         \ {"text" : "●", "texthl": "LspDiagnosticsErrorSign"})
     call sign_define("LspDiagnosticsWarningSign",

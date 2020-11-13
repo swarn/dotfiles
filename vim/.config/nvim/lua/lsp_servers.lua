@@ -9,11 +9,11 @@ local nvim_lsp = require("nvim_lsp")
 -- Load modules from plugins.
 -- Skipping nvim_completion here: I use it for all buffers
 -- local nvim_completion = require("completion")
-local nvim_diagnostic = require("diagnostic")
+-- local nvim_diagnostic = require("diagnostic")
 
 local custom_attach = function()
   -- nvim_completion.on_attach()
-  nvim_diagnostic.on_attach()
+  -- nvim_diagnostic.on_attach()
   print("LSP Attached.")
 end
 
