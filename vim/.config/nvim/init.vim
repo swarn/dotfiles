@@ -4,6 +4,8 @@ let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 let g:python3_host_prog = '/opt/local/bin/python3.9'
 
+let s:use_coc = 1
+
 augroup MyGroup
   au!
 augroup END
@@ -11,7 +13,7 @@ augroup END
 """"""""""""""""""""""""""""""""
 " Plugins: managed with vim-plug
 """"""""""""""""""""""""""""""""
-silent! if plug#begin('~/.config/nvim/plugged')
+silent! if plug#begin(stdpath('data') . '/plugged')
 
 Plug 'gruvbox-community/gruvbox'
     let g:gruvbox_bold = 1
@@ -90,6 +92,27 @@ Plug 'SirVer/ultisnips'
     let g:UltiSnipsJumpForwardTrigger="<c-j>"
     let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
+if s:use_coc
+
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
+    let g:coc_global_extensions = [
+      \ 'coc-clangd',
+      \ 'coc-json',
+      \ 'coc-pyright',
+      \ 'coc-ultisnips',
+      \ ]
+
+    " Disable airline's display of lsp server status in coc.
+    function! AirlineInit()
+        let g:airline_section_c =
+            \ airline#section#create(['%<', 'file', ' ', 'readonly'])
+    endfunction
+    autocmd User AirlineAfterInit call AirlineInit()
+
+else
+
 Plug 'neovim/nvim-lspconfig'
 Plug 'robert-oleynik/clangd-nvim'
 
@@ -106,9 +129,13 @@ Plug 'nvim-lua/telescope.nvim'
 Plug 'Shougo/echodoc.vim'
     let g:echodoc_enable_at_startup = 1
 
+endif
+
 call plug#end()
 endif
 
+
+if ! s:use_coc
 
 " nvim-lspconfig
 lua require('lsp_servers')
@@ -124,6 +151,8 @@ autocmd MyGroup BufEnter * call <SID>AttachCompletionIfLoaded()
 " telescope.nvim
 lua require('configure_telescope')
 
+endif
+
 
 """"""""""""""""""
 " command mappings
@@ -135,45 +164,19 @@ map <SPACE> <leader>
 
 nmap                      s   <Plug>(easymotion-overwin-f)
 
-nnoremap <silent> <Leader>f   <cmd>lua MyTscopeFiles()<CR>
-nnoremap <silent> <Leader>F   <cmd>lua MyTscopeAllFiles()<CR>
-nnoremap <silent> <Leader>b   <cmd>FzfBuffers<CR>
-nnoremap          <Leader>/   :FzfRg<Space>
-
-nnoremap <silent> <leader>sd  <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
-nnoremap <silent> <leader>sh  <cmd>lua vim.lsp.buf.hover()<CR>
-
-nnoremap <silent> <leader>cc  <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <leader>cr  <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <leader>cn  <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <leader>cf  <cmd>lua vim.lsp.buf.formatting()<CR>
-
-nnoremap <silent> <leader>gd  <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> <leader>gh  <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> <leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <leader>gt  <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> <leader>go  <cmd>Telescope lsp_document_symbols<CR>
-nnoremap <silent> <leader>ge  <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
-nnoremap <silent> <leader>gr  <cmd>Telescope lsp_references<CR>
-
-nnoremap <silent> <leader>ei  <cmd>lua MyTscopeConfigFiles()<CR>
-nnoremap <silent> <leader>ed  <cmd>lua MyTscopeDotFiles()<CR>
-nnoremap <silent> <leader>en  <cmd>lua MyTscopeNotesGrep()<CR>
-nnoremap <silent> <Leader>eh  <cmd>FzfHistory<CR>
-
-nnoremap <silent> <leader>tc  <cmd>CompletionToggle<CR>
-nnoremap <silent> <leader>tw  :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
-
 nnoremap <silent> <leader>dd  <cmd>Dispatch<CR>
 nnoremap <silent> <leader>db  <cmd>Dispatch!<CR>
 
-nnoremap <silent>         ]d  <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent>         [d  <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nmap                      ]h  <Plug>(GitGutterNextHunk)
-nmap                      [h  <Plug>(GitGutterPrevHunk)
+nnoremap <silent> <leader>tw  :set colorcolumn=<C-R>=&colorcolumn != 0 ? 0 : 89<CR><CR>
 
-imap                   <tab>  <Plug>(completion_smart_tab)
-imap                 <s-tab>  <Plug>(completion_smart_s_tab)
+nmap     <silent>         ]h  <Plug>(GitGutterNextHunk)
+nmap     <silent>         [h  <Plug>(GitGutterPrevHunk)
+
+if s:use_coc
+    runtime mappings-coc.vim
+else
+    runtime mappings-lua.vim
+endif
 
 
 """"""
@@ -185,12 +188,6 @@ sign define LspDiagnosticsSignError text=●
 sign define LspDiagnosticsSignWarning text=●
 sign define LspDiagnosticsSignInformation text=●
 sign define LspDiagnosticsSignHint text=●
-
-" Temp highlighting until gruvbox updates for new lsp highlight groups
-hi! link LspDiagnosticsSignError GruvboxRedSign
-hi! link LspDiagnosticsSignWarning GruvboxYellowSign
-hi! link LspDiagnosticsSignHint GruvboxAquaSign
-hi! link LspDiagnosticsSignInformation GruvboxBlueSign
 
 set number                  " line numbering
 set hidden                  " allow changed buffers in the background

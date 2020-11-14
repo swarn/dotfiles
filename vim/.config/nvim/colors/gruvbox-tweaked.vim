@@ -1,5 +1,8 @@
 runtime colors/gruvbox.vim
 
+" Instead of GruvboxGray, use slighly lighter GruvBoxFg4, with italic
+highlight! Comment guifg=#a89984 ctermfg=246 guibg=NONE ctermbg=NONE gui=italic cterm=italic
+
 " Fade GitGutter into the background
 highlight! link GitGutterAdd LineNr
 highlight! link GitGutterChange LineNr
@@ -56,23 +59,45 @@ hi! link cppStorageClass Normal
 hi! link cppStructure Normal
 hi! link cppType Normal
 
-" Coloring for clangd semantic groups
+" Coloring for vim-lsp-cxx-highlight groups
+hi! link LspCxxHlSymUnknown Normal
+hi! link LspCxxHlSymVariable GruvboxRed
+hi! link LspCxxHlSymFunction GruvboxYellow
+hi! link LspCxxHlSymStaticMethod GruvboxOrange
+hi! link LspCxxHlSymUnknownStaticField GruvboxOrange
+hi! link LspCxxHlSymClass GruvboxAqua
+hi! link LspCxxHlSymStruct GruvboxAqua
+hi! link LspCxxHlSymMethod GruvboxGreen
+hi! link LspCxxHlSymField GruvboxGreen
+hi! link LspCxxHlSymParameter GruvboxPurple
+hi! link LspCxxHlSymLocalVariable GruvboxBlue
+hi! link LspCxxHlSymMacro Normal
+hi! link LspCxxHlSymNamespace Normal
+hi! link LspCxxHlSymDependentName Normal
+hi! link LspCxxHlSymConcept Normal
+hi! link LspCxxHlSymDependentType Normal
+hi! link LspCxxHlSymEnum Normal
+hi! link LspCxxHlSymEnumConstant Normal
+hi! link LspCxxHlSymTypeAlias Normal
+hi! link LspCxxHlSymTypeParameter Normal
+hi! link LspCxxHlSymTypedef Normal
+hi! link LspCxxHlSymTemplateParameter Normal
+hi! link LspCxxHlSymPrimitive Normal
+hi! link LspCxxHlSymEnumConstant Normal
+hi! link LspCxxHlSkippedRegion Normal
+hi! link LspCxxHlSkippedRegionBeginEnd Normal
+
+" coloring for clangd-nvim highlighting groups
 hi! link ClangdUnknown Normal
-
-" Global variables
 hi! link ClangdVariable GruvboxRed
-hi! link ClangdFunction Normal
-
+hi! link ClangdFunction GruvboxYellow
 hi! link ClangdStaticMemberFunction GruvboxOrange
 hi! link ClangdStaticField GruvboxOrange
-
 hi! link ClangdClass GruvboxAqua
 hi! link ClangdMemberFunction GruvboxGreen
 hi! link ClangdField GruvboxGreen
-
 hi! link ClangdParameter GruvboxPurple
 hi! link ClangdLocalVariable GruvboxBlue
-
 hi! link ClangdPreprocessor Normal
 hi! link ClangdNamespace Normal
 hi! link ClangdDependentName Normal
@@ -84,4 +109,3 @@ hi! link ClangdTemplateParameter Normal
 hi! link ClangdPrimitive Normal
 hi! link ClangdEnumConstant Normal
 hi! link ClangdInactiveCode Normal
-

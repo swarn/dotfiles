@@ -1,0 +1,22 @@
+{
+    "diagnostic.enableHighlightLineNumber": false,
+    "diagnostic.enableMessage": "jump",
+    "diagnostic.errorSign": "●",
+    "diagnostic.warningSign": "●",
+    "diagnostic.infoSign": "●",
+    "diagnostic.hintSign": "●",
+    "diagnostic.checkCurrentLine": true,
+
+    "signature.target":"echo",
+
+    "clangd.semanticHighlighting": true,
+    "clangd.disableSnippetCompletion": true,
+    "clangd.arguments": [
+        "--compile-commands-dir", "build",
+        "--background-index",
+        "--header-insertion", "iwyu"
+    ],
+
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "~/.local/bin/black"
+}

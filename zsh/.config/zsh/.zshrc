@@ -50,8 +50,12 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
+if [ ! -d $XDG_CACHE_HOME/zsh ]; then
+    mkdir -p $XDG_CACHE_HOME/zsh
+fi
+
 # Enable smarter tab completions.
-autoload -U compinit && compinit
+autoload -U compinit && compinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
 
 # Quiet!
 setopt no_beep

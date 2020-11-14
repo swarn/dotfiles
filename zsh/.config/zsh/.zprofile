@@ -17,3 +17,8 @@ manpath=($MACPORTS/share/man $manpath)
 USER_LOCAL=~/.local
 path=($USER_LOCAL/bin $path)
 manpath=($USER_LOCAL/share/man $manpath)
+
+# Set up paths for LuaRocks
+if hash luarocks 2>/dev/null; then
+    eval $(luarocks path --bin)
+fi
