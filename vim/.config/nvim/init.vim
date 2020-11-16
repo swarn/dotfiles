@@ -46,6 +46,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
     let g:dispatch_no_maps = 1
 
+Plug 'tpope/vim-repeat'
+
 Plug 'wellle/targets.vim'
 
 Plug 'psliwka/vim-smoothie'
@@ -102,6 +104,7 @@ Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
       \ 'coc-json',
       \ 'coc-pyright',
       \ 'coc-ultisnips',
+      \ 'coc-yaml',
       \ ]
 
     " Disable airline's display of lsp server status in coc.
