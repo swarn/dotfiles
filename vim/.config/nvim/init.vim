@@ -33,6 +33,8 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'tpope/vim-fugitive'
 
+Plug 'tpope/vim-abolish'
+
 Plug 'tpope/vim-surround'
     " Latex definitions. Where * is the cursor:
     "   Old text        Command       New text
